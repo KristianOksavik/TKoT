@@ -22,8 +22,9 @@
 #    eller
 #  - Når det bare er én spiller igjen (de andre har mistet all sin HP)
 
-
+import os
 import random
+import time
 
 class Player(object):
     """
@@ -85,6 +86,12 @@ class Card(object):
         self.deals_attack = None
 
 def throw_dice(dice=[], bonus_die=None):
+    """
+    Denne funksjonen tar imot en liste med Terning-objekter, samt en valgfri bonusterning.
+    Deretter kaster den alle terningene og returnerer resultatet fra kastene i en liste.
+
+    """
+
     result = []
 
     for die in dice:
@@ -96,6 +103,16 @@ def throw_dice(dice=[], bonus_die=None):
         result.append(bonus_die_result)
 
     return result
+
+def clear():
+    """
+    Denne funksjonen brukes for å tømme skjermen i terminalen.
+
+    """
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 def main():
     # Nå må vi gjøre spillet klart.
@@ -127,34 +144,53 @@ def main():
 
     # Spill-loopen vår kjører helt til game_finished settes til True
     while not game_finished:
+        clear()
         print("Runde nummer: %s" % round_counter)
 
+        # Hvis dette er den første runden, må vi finne ut av hvilken spiller som skal få lov til å begynne.
         if round_counter == 1:
-            best_player = players.copy()
-            best_roll = 0
+            best_player = players.copy() # best_player skal til slutt kun inneholde Player-objektet til spilleren som får flest antall smash. Denne spilleren får lov til å begynne.
+            best_roll = 0 # Variabel som benyttes for å finne ut av om et kast er bedre eller dårligere enn det de andre spillerne har kastet.
 
+            # Denne while-loopen kjører om igjen helt til det bare er ett spillerobjekt igjen i best_player-listen.
             while len(best_player) != 1:
+                # surviving_players inneholder spillerobjektene til de tspillerne som il enhver tid har de beste kastene.
                 surviving_players = []
+
+                # Denne for-loopen kjører gjennom alle spillerobjektene som fremdeles er med i kampen om å starte spillet
                 for player in best_player:
+                    clear()
+
                     # Vent på at spilleren kaster terningene
                     input("{spillernavn}: Trykk enter for å kaste terningene!".format(spillernavn=player.name))
 
-                    throw = throw_dice(dice)
+                    throw = throw_dice(dice) # Her bruker vi throw_dice-funksjonen vår, og lagrer resultatet fra kastet i throw-variabelen.
                     print("Du kastet: ")
                     for occurence in throw:
                         print(occurence)
 
-                    number_of_smash = throw.count("smash")
+                    number_of_smash = throw.count("smash") # Her teller vi opp antallet smash so ble trillet.
 
+                    # Nå sjekker vi om spilleren har klart å trille flere smash enn de andre spillerne så langt.
+                    # Hvis spilleren har trillet flest smash, erstatter vi surviving_players-listen med en ny liste som kun inneholder spilleren som har "rekorden"
                     if number_of_smash > best_roll:
                         surviving_players = [player]
                         best_roll = number_of_smash
+                    # Hvis det er en annen spiller som har trillet like mange smash, legger spilleren seg selv til i listen over surviving_players.
+                    # Disse må kaste på nytt hvis ikke det er annen spiller som slår begge to.
                     elif number_of_smash == best_roll:
                         surviving_players.append(player)
+                    
+                    time.sleep(2)
                 
+                # Her oppdaterer vi best-player-listen med den eller de spillerne som overlevde kasterunden.
+                # Hvis det bare blir værende igjen én spiller i best_player, vil while-loopen vår avslutte, og vi har en vinner.
                 best_player = surviving_players.copy()
+
+                # Siden vi nå skal begynne på en ny kasterunde, må vi huske å nullstille best_roll
                 best_roll = 0
 
+            clear()
             print("{spillernavn} starter spillet!".format(spillernavn=best_player[0].name))
             
             # Omrokker på players-listen i henhold til hvem som begynner
@@ -166,9 +202,14 @@ def main():
             for player in players:
                 print(player.name)
             
+            time.sleep(3)
+            
         else:
             # En vanlig runde av spillet starter.
             print("Starter runde nummer {rundeteller}".format(rundeteller=round_counter))
+
+            # Gå inn i terningkast-loopen. Denne loopen skal kjøre i maks 3 runder.
+            # Spilleren skal kunne velge hvilke terningen han vil spare på.
         
         round_counter += 1 # Øk rundetelleren med 1.
 
