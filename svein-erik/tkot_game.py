@@ -128,7 +128,7 @@ def main():
 
     # Spill-loopen vår kjører helt til game_finished settes til True
     while not game_finished:
-        print("Runde nummer: " + round_counter)
+        print("Runde nummer: %s" % round_counter)
 
         if round_counter == 1:
             best_player = None
