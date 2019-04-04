@@ -25,7 +25,6 @@
 
 import random
 
-
 class Player(object):
     """
     En spiller-klasse som inneholder informasjon som er viktig for spillet:
@@ -105,7 +104,7 @@ def main():
     # Opprett spiller-objektene, og lagre dem i "players"-lista
     players = []
     for counter in range(antall_spillere):
-        player = Player()
+        player = Player(name = "Spiller {nummer}".format(nummer=counter+1))
         players.append(player)
     
     # Opprett seks terninger
@@ -131,17 +130,44 @@ def main():
         print("Runde nummer: %s" % round_counter)
 
         if round_counter == 1:
-            best_player = None
+            best_player = players.copy()
+            best_roll = 0
 
-            for player in players:
-                # Vent på at spilleren kaster terningene
-                input("{spillernavn}: Trykk enter for å kaste terningene!".format(spillernavn=player.name))
+            while len(best_player) != 1:
+                surviving_players = []
+                for player in best_player:
+                    # Vent på at spilleren kaster terningene
+                    input("{spillernavn}: Trykk enter for å kaste terningene!".format(spillernavn=player.name))
 
-                throw = throw_dice(dice)
+                    throw = throw_dice(dice)
+                    print("Du kastet: ")
+                    for occurence in throw:
+                        print(occurence)
 
-                if best_player not None
+                    number_of_smash = throw.count("smash")
 
+                    if number_of_smash > best_roll:
+                        surviving_players = [player]
+                        best_roll = number_of_smash
+                    elif number_of_smash == best_roll:
+                        surviving_players.append(player)
+                
+                best_player = surviving_players.copy()
+                best_roll = 0
+
+            print("{spillernavn} starter spillet!".format(spillernavn=best_player[0].name))
+
+            # Omrokker på players-listen i henhold til hvem som begynner
+            
+        
+        else:
+            # En vanlig runde av spillet starter.
+            print("Starter runde nummer {rundeteller}".format(rundeteller=round_counter))
+        
         round_counter += 1 # Øk rundetelleren med 1.
+
+        if round_counter == 50:
+            game_finished = True # Avslutt spillet
 
 
 if __name__ == '__main__':
