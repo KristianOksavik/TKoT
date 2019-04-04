@@ -156,17 +156,23 @@ def main():
                 best_roll = 0
 
             print("{spillernavn} starter spillet!".format(spillernavn=best_player[0].name))
-
-            # Omrokker på players-listen i henhold til hvem som begynner
             
-        
+            # Omrokker på players-listen i henhold til hvem som begynner
+            players = players[players.index(best_player[0]):] + players[0:players.index(best_player[0])]
+            
+            # Skriv ut rekkefølgen på spillerne
+            print("Spillernes rekkefølge:")
+
+            for player in players:
+                print(player.name)
+            
         else:
             # En vanlig runde av spillet starter.
             print("Starter runde nummer {rundeteller}".format(rundeteller=round_counter))
         
         round_counter += 1 # Øk rundetelleren med 1.
 
-        if round_counter == 50:
+        if round_counter == 4:
             game_finished = True # Avslutt spillet
 
 
