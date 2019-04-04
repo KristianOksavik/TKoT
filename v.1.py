@@ -4,29 +4,28 @@ import random
 
 class Player(object):
 	
-	def __init__(self, name="spillernavn"):
-		self.name = spillernavn
-		self.energy = 0
-		self.hp = 10
-		self.points = 0
-		self.card = []
-    
+    def __init__(self, name="spillernavn"):
+        self.name = name
+        self.energy = 0
+        self.hp = 10
+        self.points = 0
+        self.card = []
+
     def get_hp(self):
         return self.hp
+    def get_energy(self):
+        return self.energy
+    def get_points(self):
+        return self.points
 
-    def get_energy(self) :
-        return_energy.
-    def get_points(self)
-        return_points
+player_one = Player()
 
-player_one = player()
-
-print (player_one.get.hp)
+print (player_one.get_hp)
 
 
-class Card(object)
+class Card(object):
 
-    def__init__(self):
+    def __init__(self):
         self.name = None
         self.description = None
         self.cost = None
@@ -44,7 +43,7 @@ Nuclearpowerplant.one_time_use = True
 Nuclearpowerplant.image = None
 
 Energydrink = Card()
-Energydrink =  
+# Energydrink = 
 
 players = []
 for counter in range(4):
@@ -52,19 +51,18 @@ for counter in range(4):
     players.append(player)
 
 
-class die(object):
+class Die(object):
     def __init__(self):
-    self.faces = [1,2,3,"smash", "heart", "energy"]
+        self.faces = [1, 2, 3, "smash", "heart", "energy"]
 
-    def trow.(self):
-        random.choice(self,faces)
-
-        return restult
+    def throw(self):
+        random.choice(self, faces)
+        return result
 
 # opprett 6 terninger
 dice = []
-for counter in range(6)
+for counter in range(6):
     die = Die()
     dice.append(die)
 
-for player in players: 
+# for player in players: 
