@@ -80,7 +80,7 @@ if result_count_energi != 0:
         while result_count_energi > 0:
             result.remove("energi")
             reroll += 1 # Legger til en terning til hvor mange terninger som skal kastes om igjen.
-            result_count_1 -= 1
+            result_count_energi -= 1
 
 # Sier hvor mange terninger som har blitt valgt bort og skal kastes igjen.
 print(str(reroll) + " terninger kastes om igjen.")
