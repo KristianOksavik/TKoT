@@ -1,4 +1,4 @@
-#result = ["1", "2", "3", "smash", "hjerte", "energi"]
+# result er et eksempelkast
 result = ["1", "1", "smash", "smash", "2", "energi"]
 reroll = 0 # Hvor mange terninger som skal kastes om igjen.
 
