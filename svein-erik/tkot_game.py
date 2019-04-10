@@ -118,6 +118,9 @@ def main():
     # Nå må vi gjøre spillet klart.
     antall_spillere = 4
 
+    # Game speed
+    speed = 1
+
     # Opprett spiller-objektene, og lagre dem i "players"-lista
     players = []
     for counter in range(antall_spillere):
@@ -150,10 +153,11 @@ def main():
         # Hvis dette er den første runden, må vi finne ut av hvilken spiller som skal få lov til å begynne.
         if round_counter == 1:
             best_player = players.copy() # best_player skal til slutt kun inneholde Player-objektet til spilleren som får flest antall smash. Denne spilleren får lov til å begynne.
-            best_roll = 0 # Variabel som benyttes for å finne ut av om et kast er bedre eller dårligere enn det de andre spillerne har kastet.
-
+            
             # Denne while-loopen kjører om igjen helt til det bare er ett spillerobjekt igjen i best_player-listen.
             while len(best_player) != 1:
+                best_roll = 0 # Variabel som benyttes for å finne ut av om et kast er bedre eller dårligere enn det de andre spillerne har kastet.
+
                 # surviving_players inneholder spillerobjektene til de tspillerne som il enhver tid har de beste kastene.
                 surviving_players = []
 
@@ -181,17 +185,14 @@ def main():
                     elif number_of_smash == best_roll:
                         surviving_players.append(player)
                     
-                    time.sleep(2)
+                    time.sleep(speed)
                 
                 # Her oppdaterer vi best-player-listen med den eller de spillerne som overlevde kasterunden.
                 # Hvis det bare blir værende igjen én spiller i best_player, vil while-loopen vår avslutte, og vi har en vinner.
                 best_player = surviving_players.copy()
 
-                # Siden vi nå skal begynne på en ny kasterunde, må vi huske å nullstille best_roll
-                best_roll = 0
-
             clear()
-            print("{spillernavn} starter spillet!".format(spillernavn=best_player[0].name))
+            print("{spillernavn} starter spillet. Antall smash: {best_roll}".format(spillernavn=best_player[0].name, best_roll=best_roll))
             
             # Omrokker på players-listen i henhold til hvem som begynner
             players = players[players.index(best_player[0]):] + players[0:players.index(best_player[0])]
@@ -202,7 +203,7 @@ def main():
             for player in players:
                 print(player.name)
             
-            time.sleep(3)
+            input("Trykk en tast for å starte spillet.")
             
         else:
             # En vanlig runde av spillet starter.
