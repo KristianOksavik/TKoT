@@ -356,8 +356,6 @@ def main():
                     break
 
                 input("Trykk en tast for å fortsette...")
-                
-                
 
             # Gå inn i terningkast-loopen. Denne loopen skal kjøre i maks 3 runder.
             # Spilleren skal kunne velge hvilke terningen han vil spare på.
