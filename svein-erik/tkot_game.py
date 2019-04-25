@@ -330,7 +330,7 @@ def main():
                             players.remove(player_in_tokyo)
                             player_in_tokyo = None
                         
-                        else:
+                        elif number_of_smashes > 0:
                             svar = input(player_in_tokyo.name + ": Du står i Tokyo. Vil du gå ut? Svar J for å gå ut")
                             if svar == "J":
                                 player_in_tokyo = None
