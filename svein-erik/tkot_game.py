@@ -33,7 +33,8 @@
 # - velg utfall av terningene
 # - motta eller utfør utfall av terningene
 # - legg til kort effekt
-# - kjøp kort 
+# - Hvis det er runde en skal første spiller bevege seg inn til Tokyo 
+# - kjøp kort
 # - hvis du gjorde skade på player i Tokyo kan player i tokyo velge om han skal ut av tokyo eller bli, velger han og forlate tokyo må du plassere deg i Tokyo
 # - End turn
 
@@ -214,7 +215,7 @@ def main():
                 # Hvis det bare blir værende igjen én spiller i best_player, vil while-loopen vår avslutte, og vi har en vinner.
                 best_player = surviving_players.copy()
 
-            clear()
+            #husk og sette tilbake clear()
             print("{spillernavn} starter spillet. Antall smash: {best_roll}".format(spillernavn=best_player[0].name, best_roll=best_roll))
             
             # Omrokker på players-listen i henhold til hvem som begynner
