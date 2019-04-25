@@ -129,6 +129,7 @@ def clear():
     Denne funksjonen brukes for å tømme skjermen i terminalen.
 
     """
+    return False
     if os.name == 'nt':
         os.system('cls')
     else:
@@ -139,7 +140,7 @@ def main():
     antall_spillere = 4
 
     # Game speed
-    speed = 1
+    speed = 0.01
 
     # Opprett spiller-objektene, og lagre dem i "players"-lista
     players = []
@@ -166,6 +167,8 @@ def main():
     round_counter = 1
 
     # Spill-loopen vår kjører helt til game_finished settes til True
+    player_in_tokyo = None
+
     while not game_finished:
         clear()
         print("Runde nummer: %s" % round_counter)
@@ -228,15 +231,136 @@ def main():
         else:
             # En vanlig runde av spillet starter.
             print("Starter runde nummer {rundeteller}".format(rundeteller=round_counter))
+            for player in players:
+                if player_in_tokyo == player:
+                    input(player.name + ": Du får 2 poeng fordi du er i Tokyo.")
+                    player.points += 2
+                
+                if player.points >= 20:
+                    winner = player
+                    game_finished = True
+                    break
+
+                input(player.name + ": Trykk en tast for å kaste terningen.")
+                throw = throw_dice(dice)
+
+                print("Du kastet: ")
+                throw_count = 0
+                keep = []
+                while throw_count < 3 and len(throw) > 0:
+                    die_counter = 1
+                    
+                    for occurence in throw:
+                        print("Terning " + str(die_counter) + ": " + str(occurence))
+                        die_counter += 1
+                
+                    throw_count += 1
+
+                    if throw_count == 3:
+                        keep += throw
+                    else:
+                        choice_input = input(player.name + ": Hvilke terninger vil du beholde? Separer tallene med komma.")
+                        if len(choice_input) > 0:
+                            choices = choice_input.split(",")
+                            for choice in choices:
+                                keep.append(throw[int(choice)-1])
+                        
+                            # Fjern terninger fra de resterende terningene
+                            throw = throw[len(choices):]
+                
+                print("Du har valgt å spare på følgende terninger:")
+                for choice in keep:
+                    print(choice)
+                
+                # Tell opp resultatet fra terningkastene:
+                number_of_smashes = keep.count("smash")
+                number_of_energy = keep.count("energy")
+                number_of_hearts = keep.count("heart")
+                number_of_one = keep.count(1)
+                number_of_two = keep.count(2)
+                number_of_three = keep.count(3)
+
+                if player_in_tokyo == player:
+                    input(player.name + ": Du står i Tokyo, og hjertene dine ble gjort om til energi. +" + str(number_of_hearts) + " energi")
+                    player.energy += number_of_hearts
+                else:
+                    input(player.name + ": +" + str(number_of_hearts) + " hp")
+                    player.hp += number_of_hearts
+                    if player.hp > 10:
+                        input("Du har maks hp.")
+                        player.hp = 10
+
+                input(player.name + ": +" + str(number_of_energy) + " energi")
+                player.energy += number_of_energy
+
+                points = 0
+                if number_of_one >= 3:
+                    points = 1 + (number_of_one - 3)
+                
+                elif number_of_two >= 3:
+                    points = 2 + (number_of_two - 3)
+                
+                elif number_of_three >= 3:
+                    points = 3 + (number_of_three - 3)
+                
+                if points > 0:
+                    input(player.name + ": +" + str(points) + " poeng")
+                    player.points += points
+                
+                if player_in_tokyo == player:
+                    print("Du står i Tokyo, og skal derfor gi damage til alle de andre spillerne!")
+                    for entry in players:
+                        if entry != player:
+                            entry.hp -= number_of_smashes
+                            input(entry.name + ": " + str(number_of_smashes) + " damage. HP: " + str(entry.hp))
+                            if entry.hp <= 0:
+                                input(entry.name + ": Du er død, og er ikke med i spillet lengre.")
+                                players.remove(entry)
+
+                else:
+                    try:
+                        player_in_tokyo.hp -= number_of_smashes
+                        input(player_in_tokyo.name + ": " + str(number_of_smashes) + " damage. HP: " + str(player_in_tokyo.hp))
+
+                        # Sjekk om spilleren i Tokyo ble slått ut
+                        if player_in_tokyo.hp <= 0:
+                            input(player_in_tokyo.name + ": Du er nå død, og blir fjernet fra spillet.")
+                            players.remove(player_in_tokyo)
+                            player_in_tokyo = None
+                        
+                        else:
+                            svar = input(player_in_tokyo.name + ": Du står i Tokyo. Vil du gå ut? Svar J for å gå ut")
+                            if svar == "J":
+                                player_in_tokyo = None
+
+                    except AttributeError:
+                        pass
+
+                if not player_in_tokyo:
+                    input("Det er ingen spillere i Tokyo lengre, så da må du inn dit, " + player.name + "!")
+                    player_in_tokyo = player
+                    player.points += 1
+
+                if player.points >= 20:
+                    input(player.name + " har nådd 20 poeng. Grattis!")
+                    winner = player
+                    game_finished = True
+                    break
+                
+                if len(players) == 1:
+                    input(players[0] + " er den eneste gjenværende spilleren! Grattis!")
+                    winner = players[0]
+                    game_finished = True
+                    break
+
+                input("Trykk en tast for å fortsette...")
+                
+                
 
             # Gå inn i terningkast-loopen. Denne loopen skal kjøre i maks 3 runder.
             # Spilleren skal kunne velge hvilke terningen han vil spare på.
         
         round_counter += 1 # Øk rundetelleren med 1.
-
-        if round_counter == 4:
-            game_finished = True # Avslutt spillet
-
 
 if __name__ == '__main__':
     main()
