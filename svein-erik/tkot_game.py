@@ -246,7 +246,7 @@ def main():
                 throw_count = 0
                 keep = []
                 current_dice = dice.copy()
-                while throw_count < 3 and len(throw) > 0:
+                while throw_count < 3 and len(current_dice) > 0:
                     input(player.name + ": Trykk en tast for å kaste terningene.")
                     throw = throw_dice(current_dice)
                     die_counter = 1
@@ -350,7 +350,7 @@ def main():
                     break
                 
                 if len(players) == 1:
-                    input(players[0] + " er den eneste gjenværende spilleren! Grattis!")
+                    input(players[0].name + " er den eneste gjenværende spilleren! Grattis!")
                     winner = players[0]
                     game_finished = True
                     break
