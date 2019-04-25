@@ -10,13 +10,33 @@
 #
 # En vanlig runde:
 #  - Spilleren kaster terningen
-#  - Energi gir spilleren ekstra energi. Maks 20 energi er tillatt.
+#  - Energi gir spilleren ekstra energi. 
 #  - Hjerter gir spilleren HP. Maks 20 HP er tillatt.
 #  - Smash samles opp, og spilleren kan velge hvilken spiller som skal få damage.
 #     - Hvis spilleren har et spesialkort for damage, kan han dele ut damage til alle de andre spillerne på en gang.
 #  - I slutten av spillerens tur, kan han velge om han vil kjøpe et spesialkort med energien sin.
 #     - Hvis spilleren vil bytte ut alle kortene, betaler han to energi, og så byttes alle spesialkortene ut.
 #
+# Runde sekvens hvis du er i Tokyo :
+# - legg til eventuell kort effekt 
+# - Få bonus poeng for at du er i Tokyo, har du stått en runde får du 2 poeng
+# - Kast terning
+# - velg utfall av terningene
+# - Motta eller utfør utfall av terningene
+# - Legg til kort effekt
+# - Kjøp kort 
+# - End turn
+#
+# Runde sekvens hvis du er utenfor Tokyo
+# - legg til eventuell kort effekt
+# - kast terning
+# - velg utfall av terningene
+# - motta eller utfør utfall av terningene
+# - legg til kort effekt
+# - kjøp kort 
+# - hvis du gjorde skade på player i Tokyo kan player i tokyo velge om han skal ut av tokyo eller bli, velger han og forlate tokyo må du plassere deg i Tokyo
+# - End turn
+
 # Spillet avsluttes:
 #  - Når første spiller har nådd 20 poeng
 #    eller
@@ -220,3 +240,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
