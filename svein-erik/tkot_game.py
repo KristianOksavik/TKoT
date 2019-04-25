@@ -239,17 +239,18 @@ def main():
                 if player.points >= 20:
                     winner = player
                     game_finished = True
+                    input(player.name + " vant! Antall poeng: " + str(player.points))
                     break
 
-                input(player.name + ": Trykk en tast for å kaste terningen.")
-                throw = throw_dice(dice)
-
-                print("Du kastet: ")
                 throw_count = 0
                 keep = []
+                current_dice = dice.copy()
                 while throw_count < 3 and len(throw) > 0:
+                    input(player.name + ": Trykk en tast for å kaste terningene.")
+                    throw = throw_dice(current_dice)
                     die_counter = 1
-                    
+
+                    print("Du kastet: ")
                     for occurence in throw:
                         print("Terning " + str(die_counter) + ": " + str(occurence))
                         die_counter += 1
@@ -266,7 +267,7 @@ def main():
                                 keep.append(throw[int(choice)-1])
                         
                             # Fjern terninger fra de resterende terningene
-                            throw = throw[len(choices):]
+                            current_dice = current_dice[len(choices):]
                 
                 print("Du har valgt å spare på følgende terninger:")
                 for choice in keep:
